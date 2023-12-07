@@ -119,7 +119,6 @@ pub fn execute_join_lottery(
     let mut rounds: Vec<Round> = lottery_state.rounds.clone();
 
     if let Some(current_round) = rounds.last_mut() {
-
         let total_entries: f64 = total_entries * msg.number_of_tickets as f64;
 
         // Update participant field and current entries
@@ -133,11 +132,9 @@ pub fn execute_join_lottery(
         // LOTTERY_STATE.save(deps.storage, lottery_state)?;
         LOTTERY_STATE.save(deps.storage, &lottery_state)?;
 
-
          // Deduct the entry fee multiplied by the selected number of tickets from the user's account
          let entry_fee_per_ticket = Uint128::from(lottery_state.entry_fee);
          let total_deduction = entry_fee_per_ticket * Uint128::from(msg.number_of_tickets);
-
 
           // Check if the user has enough funds
         if info.funds.len() != 1 || info.funds[0].amount < total_deduction {
