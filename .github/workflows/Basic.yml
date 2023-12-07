@@ -11,6 +11,14 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v2
 
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: 1.58.1
+          target: wasm32-unknown-unknown
+          override: true
+
       - name: Run unit tests
         uses: actions-rs/cargo@v1
         with:
@@ -20,12 +28,10 @@ jobs:
           RUST_BACKTRACE: 1
 
       - name: Compile WASM contract
-        run: |
-          docker run --rm -v "$(pwd)":/code \
-            --mount type=volume,source="$(basename "$(pwd)")_cache",target=/target \
-            --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
-            cosmwasm/rust-optimizer-arm64:0.15.0 \
-            cargo wasm --locked
+        uses: actions-rs/cargo@v1
+        with:
+          command: wasm
+          args: --locked
         env:
           RUSTFLAGS: "-C link-arg=-s"
 
@@ -35,6 +41,14 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: 1.58.1
+          override: true
+          components: rustfmt, clippy
 
       - name: Run cargo fmt
         uses: actions-rs/cargo@v1
