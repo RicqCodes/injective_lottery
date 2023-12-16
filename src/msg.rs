@@ -1,8 +1,7 @@
-use cosmwasm_std::{ Uint128, Timestamp};
+use cosmwasm_std::{Timestamp, Uint128};
 use nois::NoisCallback;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct InstantiateMsg {
@@ -23,29 +22,24 @@ pub enum ExecuteMsg {
     UpdateRoundDuration(u64),
     UpdateOwner(String),
     UpdatePauseStatus(bool),
-    SelectWinners {
-        job_id: String,
-    },
+    SelectWinners { job_id: String },
     NoisReceive { callback: NoisCallback },
     CreateRound,
-    
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 
 pub enum QueryMsg {
-    LotteryInfo { },
-    CurrentRoundInfo { },
-    RoundInfo (RoundInfoQuery),
+    LotteryInfo {},
+    CurrentRoundInfo {},
+    RoundInfo(RoundInfoQuery),
 }
-
-
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct JoinLotteryMsg {
     pub sender: String,
-    pub number_of_tickets:u32,
-    pub round_entered_time:Timestamp,
+    pub number_of_tickets: u32,
+    pub round_entered_time: Timestamp,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
@@ -57,5 +51,3 @@ pub struct RoundInfoQuery {
 pub struct ParticipantInfoQuery {
     pub participant_address: String,
 }
-
-

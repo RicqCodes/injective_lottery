@@ -3,7 +3,7 @@ use std::fs::create_dir_all;
 
 use cosmwasm_schema::{export_schema, remove_schemas, schema_for};
 
-use lottery::msg::{JoinLotteryMsg, ExecuteMsg, InstantiateMsg, QueryMsg};
+use lottery::msg::{ExecuteMsg, InstantiateMsg, JoinLotteryMsg, QueryMsg};
 use lottery::state::LotteryState;
 
 fn main() {

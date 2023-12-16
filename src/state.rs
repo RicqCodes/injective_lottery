@@ -1,10 +1,8 @@
-use cosmwasm_std::{StdResult, Timestamp, StdError, Uint128, Addr};
+use cosmwasm_std::{Addr, StdError, StdResult, Timestamp, Uint128};
 use schemars::JsonSchema;
 // use cosmwasm_storage::{singleton, singleton_read};
-use serde::{Serialize, Deserialize};
 use cw_storage_plus::Item;
-
-
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Default, Clone, PartialEq, JsonSchema, Serialize, Deserialize)]
 pub struct Round {
@@ -105,7 +103,7 @@ impl LotteryState {
         self.win_percentage = win_percentage;
     }
 
-     /// Updates the entry fee for each participant in the lottery.
+    /// Updates the entry fee for each participant in the lottery.
     ///
     /// # Arguments
     ///
@@ -133,16 +131,16 @@ impl LotteryState {
     }
 
     /// Updates the last winner of the lottery.
-    /// 
+    ///
     /// # Arguments
-    /// 
+    ///
     /// * `winner` - The new winner.
     pub fn update_last_winner(&mut self, winner: Option<String>) -> StdResult<()> {
         if let Some(current_round) = self.rounds.last_mut() {
             current_round.winner = winner;
             Ok(())
         } else {
-            Err(StdError::generic_err("No rounds available").into())
+            Err(StdError::generic_err("No rounds available"))
         }
     }
 
@@ -156,14 +154,14 @@ impl LotteryState {
             current_round.job_id = job_id;
             Ok(())
         } else {
-            Err(StdError::generic_err("No rounds available").into())
+            Err(StdError::generic_err("No rounds available"))
         }
     }
 
     /// Updates the owner of the lottery contract.
-    /// 
+    ///
     /// # Arguments
-    /// 
+    ///
     /// * `owner` - The new owner.
     pub fn update_owner(mut self, owner: String) -> Self {
         self.owner = owner;
@@ -171,9 +169,9 @@ impl LotteryState {
     }
 
     /// Updates the pause status of the lottery contract.
-    /// 
+    ///
     /// # Arguments
-    /// 
+    ///
     /// * `pause_status` - The new pause status.
     pub fn update_pause_status(mut self, pause_status: bool) -> Self {
         self.pause_status = pause_status;
@@ -191,7 +189,9 @@ impl LotteryState {
     /// `true` if the cooldown period is over, `false` otherwise.
     pub fn is_cooldown_over(&self, current_time: &Timestamp) -> bool {
         if let Some(last_round) = self.rounds.last() {
-            let cooldown_end_time = last_round.round_start_time.plus_seconds(self.cooldown_period);
+            let cooldown_end_time = last_round
+                .round_start_time
+                .plus_seconds(self.cooldown_period);
             return current_time >= &cooldown_end_time;
         }
 
@@ -200,9 +200,9 @@ impl LotteryState {
     }
 
     /// Starts a new round of the lottery.
-    /// 
+    ///
     /// # Arguments
-    /// 
+    ///
     /// * `round_start_time` - The start time of the new round.
     pub fn start_new_round(&mut self, round_start_time: Timestamp) {
         let round_number = self.rounds.len() as u64 + 1;
@@ -211,13 +211,15 @@ impl LotteryState {
     }
 
     /// Checks if the lottery is active.
-    /// 
+    ///
     /// # Arguments
-    /// 
+    ///
     /// * `current_time` - The current time.
     pub fn is_lottery_active(&self, current_time: &Timestamp) -> bool {
         if let Some(current_round) = self.rounds.last() {
-            let round_end_time = current_round.round_start_time.plus_seconds(self.round_duration);
+            let round_end_time = current_round
+                .round_start_time
+                .plus_seconds(self.round_duration);
             let within_round_duration = current_time <= &round_end_time;
             let not_paused = !self.pause_status;
 

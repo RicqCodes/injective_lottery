@@ -31,7 +31,6 @@
 //     }
 // }
 
-
 //     let msg = InstantiateMsg {
 //         round_duration: 100,
 //         cooldown_period: 60,
@@ -40,8 +39,7 @@
 //         pause_status: false,
 //         owner: "your_owner_address".to_string(),
 //     };
-        
-        
+
 //     fn some_function() {
 //         instantiate(app.deps_mut(), env, mock_info(ADMIN, &[]), msg).unwrap();
 
