@@ -1,27 +1,19 @@
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 name: Basic
 
 jobs:
+  test:
     name: Test Suite
     runs-on: ubuntu-latest
+
     steps:
-    - name: Install cargo-hack from crates.io
-    uses: baptiste0928/cargo-install@v1.74.0
-    with:
-      crate: cargo-hack
-      version: "^0.5"  # You can specify any semver range
-
-    - name: Install cargo-sort from git
-    uses: baptiste0928/cargo-install@v2
-    with:
-      crate: cargo-sort
-      git: https://github.com/devinr528/cargo-sort
-      tag: v1.0.9  # `branch` and `commit` are also supported
-  
-    - name: Checkout sources
-      uses: actions/checkout@v2
-
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
         with:
@@ -29,8 +21,16 @@ jobs:
           toolchain: 1.58.1
           target: wasm32-unknown-unknown
           override: true
-        
-  test:
+
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Install cargo-hack from crates.io
+        run: cargo install cargo-hack --version "^0.5"
+
+      - name: Install cargo-sort from git
+        run: cargo install cargo-sort --git https://github.com/devinr528/cargo-sort --tag v1.0.9
+
       - name: Run unit tests
         uses: actions-rs/cargo@v1.74.0
         with:
@@ -50,10 +50,8 @@ jobs:
   lints:
     name: Lints
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v2
 
+    steps:
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
         with:
@@ -61,6 +59,9 @@ jobs:
           toolchain: 1.58.1
           override: true
           components: rustfmt, clippy
+
+      - name: Checkout sources
+        uses: actions/checkout@v2
 
       - name: Run cargo fmt
         uses: actions-rs/cargo@v1.74.0
