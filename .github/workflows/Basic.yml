@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Install cargo-hack from crates.io
-      uses: baptiste0928/cargo-install@v1.74.0
+      uses: baptiste0928/cargo-install@v1
       with:
         crate: cargo-hack
         version: "^0.5"
@@ -39,7 +39,7 @@ jobs:
       run: cargo clean
 
     - name: Run unit tests
-      uses: actions-rs/cargo@v1.74.0
+      uses: actions-rs/cargo@v1
       with:
         command: test
         args: --locked
@@ -47,7 +47,7 @@ jobs:
         RUST_BACKTRACE: 1
 
     - name: Compile WASM contract
-      uses: actions-rs/cargo@v1.74.0
+      uses: actions-rs/cargo@v1
       with:
         command: wasm
         args: --locked
@@ -69,19 +69,19 @@ jobs:
         components: rustfmt, clippy
 
     - name: Run cargo fmt
-      uses: actions-rs/cargo@v1.74.0
+      uses: actions-rs/cargo@v1
       with:
         command: fmt
         args: --all -- --check
 
     - name: Run cargo clippy
-      uses: actions-rs/cargo@v1.74.0
+      uses: actions-rs/cargo@v1
       with:
         command: clippy
         args: -- -D warnings
 
     - name: Generate Schema
-      uses: actions-rs/cargo@v1.74.0
+      uses: actions-rs/cargo@v1
       with:
         command: schema
         args: --locked
