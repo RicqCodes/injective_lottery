@@ -4,7 +4,6 @@ name: Basic
 
 jobs:
 
-  test:
     name: Test Suite
     runs-on: ubuntu-latest
     steps:
@@ -31,7 +30,8 @@ jobs:
           toolchain: 1.58.1
           target: wasm32-unknown-unknown
           override: true
-
+        
+  test:
       - name: Run unit tests
         uses: actions-rs/cargo@v1.74.0
         with:
