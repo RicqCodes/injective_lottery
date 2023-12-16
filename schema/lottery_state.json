@@ -5,12 +5,12 @@
   "required": [
     "cooldown_period",
     "entry_fee",
-    "fee_percentage",
     "nft_bonus_percentage",
     "owner",
     "pause_status",
     "round_duration",
-    "rounds"
+    "rounds",
+    "win_percentage"
   ],
   "properties": {
     "cooldown_period": {
@@ -20,11 +20,6 @@
     },
     "entry_fee": {
       "$ref": "#/definitions/Uint128"
-    },
-    "fee_percentage": {
-      "type": "integer",
-      "format": "uint32",
-      "minimum": 0.0
     },
     "nft_bonus_percentage": {
       "type": "integer",
@@ -47,6 +42,11 @@
       "items": {
         "$ref": "#/definitions/Round"
       }
+    },
+    "win_percentage": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
     }
   },
   "definitions": {
@@ -63,6 +63,12 @@
           "type": "integer",
           "format": "uint32",
           "minimum": 0.0
+        },
+        "job_id": {
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "participants": {
           "type": "array",

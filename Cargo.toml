@@ -1,18 +1,15 @@
 [package]
 name = "lottery"
 version = "0.1.0"
-authors = ["ricqCodes <princenwakanma1996@gmail.com>"]
+authors = ["ricqCodes <https://ricqcodes.dev>"]
 edition = "2018"
+description = "Simple CosmWasm contract for a lottery system"
+repository = "https://github.com/RicqCodes/injective_lottery"
+resolver = "2"
 
 
 [lib]
 crate-type = ["cdylib", "rlib"]
-
-exclude = [
-  # Those files are rust-optimizer artifacts. You might want to commit them for convenience but they should not be part of the source code publication.
-  "contract.wasm",
-  "hash.txt",
-]
 
 [features]
 # for more explicit tests, cargo test --features=backtraces
@@ -47,11 +44,10 @@ cw721 = "0.18.0"
 cw20 = "1.1.2"
 cw2 = "0.13.2"
 schemars = "0.8.15"
-nois = "0.8.0"
-dotenv = "0.15.0"
+nois = "0.7.0"
 serde = { version = "1.0.137", default-features = false, features = ["derive"] }
 thiserror = { version = "1.0.49" }
-getrandom = { version = "0.2.6", features = ["js"] }
+
 
 
 [dev-dependencies]

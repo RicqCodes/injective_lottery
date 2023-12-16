@@ -41,8 +41,14 @@ pub enum LotteryError {
     #[error("Invalid expiration value")]
     InvalidExpiration {},
 
-    #[error("Invalid Proxy Address")]
+    #[error("Proxy address is not valid")]
     InvalidProxyAddress {},
+
+    #[error("Unauthorized Received")]
+    UnauthorizedReceive {},
+
+    #[error("Invalid Randomness")]
+    InvalidRandomness {},
 
     #[error("Duplicate initial balance addresses")]
     DuplicateInitialBalanceAddresses {},

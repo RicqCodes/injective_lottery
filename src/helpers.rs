@@ -1,7 +1,9 @@
-use cosmwasm_std::{Addr, to_json_binary, WasmQuery, Deps, StdResult, QueryRequest};
-use cw721::Cw721QueryMsg;
-use cosmwasm_std::Timestamp;
+
 use crate::state::LotteryState;
+use cw721::Cw721QueryMsg;
+use cosmwasm_std::{ to_json_binary, BankQuery, WasmQuery, QueryRequest, StdResult, Timestamp, DepsMut, StdError, BalanceResponse, Addr, Deps};
+
+
 
 // Helper function to calculate total entries based on multipliers for different NFT counts
 fn calculate_entries(nft_count: u32) -> f64 {
@@ -77,6 +79,21 @@ pub fn is_round_over(state: &LotteryState, current_time: &Timestamp) -> bool {
 }
 
 
+// Helper function to check if the cooldown period is over
 pub fn validate_lottery_active(state: &LotteryState, current_time: &Timestamp) -> bool {
     state.is_lottery_active(current_time)
 }
+
+
+// Helper function to get the balance of the contract
+pub fn get_balance(
+    deps: &DepsMut,
+    address: String,
+) -> Result<u128, StdError> {
+    let denom = "inj".to_string();
+    let balance_query = BankQuery::Balance { denom, address };
+    let balance_response: BalanceResponse = deps.querier.query(&balance_query.into())?;
+    let balance_u128 = balance_response.amount.amount.u128();
+    Ok(balance_u128)
+}
+

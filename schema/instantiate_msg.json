@@ -5,11 +5,10 @@
   "required": [
     "cooldown_period",
     "entry_fee",
-    "fee_percentage",
-    "nft_bonus_percentage",
-    "owner",
+    "nois_proxy",
     "pause_status",
-    "round_duration"
+    "round_duration",
+    "win_percentage"
   ],
   "properties": {
     "cooldown_period": {
@@ -20,17 +19,7 @@
     "entry_fee": {
       "$ref": "#/definitions/Uint128"
     },
-    "fee_percentage": {
-      "type": "integer",
-      "format": "uint32",
-      "minimum": 0.0
-    },
-    "nft_bonus_percentage": {
-      "type": "integer",
-      "format": "uint32",
-      "minimum": 0.0
-    },
-    "owner": {
+    "nois_proxy": {
       "type": "string"
     },
     "pause_status": {
@@ -39,6 +28,11 @@
     "round_duration": {
       "type": "integer",
       "format": "uint64",
+      "minimum": 0.0
+    },
+    "win_percentage": {
+      "type": "integer",
+      "format": "uint32",
       "minimum": 0.0
     }
   },
