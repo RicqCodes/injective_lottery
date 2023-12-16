@@ -8,8 +8,21 @@ jobs:
     name: Test Suite
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout sources
-        uses: actions/checkout@v2
+    - name: Install cargo-hack from crates.io
+    uses: baptiste0928/cargo-install@v1.74.0
+    with:
+      crate: cargo-hack
+      version: "^0.5"  # You can specify any semver range
+
+    - name: Install cargo-sort from git
+    uses: baptiste0928/cargo-install@v2
+    with:
+      crate: cargo-sort
+      git: https://github.com/devinr528/cargo-sort
+      tag: v1.0.9  # `branch` and `commit` are also supported
+  
+    - name: Checkout sources
+      uses: actions/checkout@v2
 
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
