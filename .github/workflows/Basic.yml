@@ -1,86 +1,90 @@
+name: Basic
+
 on:
   push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - main
-
-name: Basic
 
 jobs:
   test:
-    name: Test Suite
     runs-on: ubuntu-latest
-
     steps:
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: 1.58.1
-          target: wasm32-unknown-unknown
-          override: true
+    - name: Install cargo-hack from crates.io
+      uses: baptiste0928/cargo-install@v1.74.0
+      with:
+        crate: cargo-hack
+        version: "^0.5"
 
-      - name: Checkout sources
-        uses: actions/checkout@v2
+    - name: Install cargo-sort from git
+      uses: baptiste0928/cargo-install@v2
+      with:
+        crate: cargo-sort
+        git: https://github.com/devinr528/cargo-sort
+        tag: v1.0.9
 
-      - name: Install cargo-hack from crates.io
-        run: cargo install cargo-hack --version "^0.5"
+    - name: Checkout sources
+      uses: actions/checkout@v2
 
-      - name: Install cargo-sort from git
-        run: cargo install cargo-sort --git https://github.com/devinr528/cargo-sort --tag v1.0.9
+    - name: Install stable toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: 1.58.0
+        target: wasm32-unknown-unknown
+        override: true
 
-      - name: Run unit tests
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --locked
-        env:
-          RUST_BACKTRACE: 1
+    - name: Update Cargo Index
+      run: cargo update -p cosmwasm-std
 
-      - name: Compile WASM contract
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --release --locked
-        env:
-          RUSTFLAGS: "-C link-arg=-s"
+    - name: Clear Cargo Cache
+      run: cargo clean
+
+    - name: Run unit tests
+      uses: actions-rs/cargo@v1.74.0
+      with:
+        command: test
+        args: --locked
+      env:
+        RUST_BACKTRACE: 1
+
+    - name: Compile WASM contract
+      uses: actions-rs/cargo@v1.74.0
+      with:
+        command: wasm
+        args: --locked
+      env:
+        RUSTFLAGS: "-C link-arg=-s"
 
   lints:
-    name: Lints
     runs-on: ubuntu-latest
-
     steps:
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: 1.58.1
-          override: true
-          components: rustfmt, clippy
+    - name: Checkout sources
+      uses: actions/checkout@v2
 
-      - name: Checkout sources
-        uses: actions/checkout@v2
+    - name: Install stable toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: 1.58.0
+        override: true
+        components: rustfmt, clippy
 
-      - name: Run cargo fmt
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --check
+    - name: Run cargo fmt
+      uses: actions-rs/cargo@v1.74.0
+      with:
+        command: fmt
+        args: --all -- --check
 
-      - name: Run cargo clippy
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: -- -D warnings
+    - name: Run cargo clippy
+      uses: actions-rs/cargo@v1.74.0
+      with:
+        command: clippy
+        args: -- -D warnings
 
-      - name: Generate Schema
-        uses: actions-rs/cargo@v1
-        with:
-          command: schema
-          args: --locked
+    - name: Generate Schema
+      uses: actions-rs/cargo@v1.74.0
+      with:
+        command: schema
+        args: --locked
 
-      - name: Schema Changes
-        # fails if any changes not committed
-        run: git diff --exit-code schema
+    - name: Schema Changes
+      run: git diff --exit-code schema
