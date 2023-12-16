@@ -32,18 +32,18 @@ jobs:
         run: cargo install cargo-sort --git https://github.com/devinr528/cargo-sort --tag v1.0.9
 
       - name: Run unit tests
-        uses: actions-rs/cargo@v1.74.0
+        uses: actions-rs/cargo@v2
         with:
-          command: unit-test
+          command: test
           args: --locked
         env:
           RUST_BACKTRACE: 1
 
       - name: Compile WASM contract
-        uses: actions-rs/cargo@v1.74.0
+        uses: actions-rs/cargo@v2
         with:
-          command: wasm
-          args: --locked
+          command: build
+          args: --release --locked
         env:
           RUSTFLAGS: "-C link-arg=-s"
 
@@ -64,19 +64,19 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run cargo fmt
-        uses: actions-rs/cargo@v1.74.0
+        uses: actions-rs/cargo@v2
         with:
           command: fmt
           args: --all -- --check
 
       - name: Run cargo clippy
-        uses: actions-rs/cargo@v1
+        uses: actions-rs/cargo@v2
         with:
           command: clippy
           args: -- -D warnings
 
       - name: Generate Schema
-        uses: actions-rs/cargo@v1.74.0
+        uses: actions-rs/cargo@v2
         with:
           command: schema
           args: --locked
