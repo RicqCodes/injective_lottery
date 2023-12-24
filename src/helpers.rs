@@ -76,7 +76,7 @@ pub fn is_round_over(state: &LotteryState, current_time: &Timestamp) -> bool {
 
 // Helper function to check if the cooldown period is over
 pub fn validate_lottery_active(state: &LotteryState, current_time: &Timestamp) -> bool {
-    state.is_lottery_active(current_time)
+    state.is_lottery_active(current_time).unwrap_or(false)
 }
 
 // Helper function to get the balance of the contract

@@ -15,6 +15,9 @@ pub enum LotteryError {
     #[error("No rounds available")]
     NoRoundAvailable {},
 
+    #[error("Cooldown period has not passed")]
+    CooldownPeriodNotPassed {},
+
     #[error("Lottery is not active")]
     NotActive {},
 

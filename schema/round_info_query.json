@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RoundInfoQuery",
+  "type": "object",
+  "required": [
+    "round_number"
+  ],
+  "properties": {
+    "round_number": {
+      "type": "integer",
+      "format": "uint64",
+      "minimum": 0.0
+    }
+  }
+}

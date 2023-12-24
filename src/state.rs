@@ -215,18 +215,29 @@ impl LotteryState {
     /// # Arguments
     ///
     /// * `current_time` - The current time.
-    pub fn is_lottery_active(&self, current_time: &Timestamp) -> bool {
+    pub fn is_lottery_active(&self, current_time: &Timestamp) -> Result<bool, String> {
         if let Some(current_round) = self.rounds.last() {
-            let round_end_time = current_round
-                .round_start_time
-                .plus_seconds(self.round_duration);
+            let round_end_time = current_round.round_start_time.plus_seconds(self.round_duration);
             let within_round_duration = current_time <= &round_end_time;
             let not_paused = !self.pause_status;
-
-            return within_round_duration && not_paused;
+    
+            if within_round_duration && not_paused {
+                Ok(true)
+            } else {
+                // Check for cooldown period
+                let cooldown_end_time = round_end_time.plus_seconds(self.cooldown_period);
+                if current_time <= &cooldown_end_time {
+                    Err("Cool-down period is active.".to_string())
+                } else {
+                    Err("Round is still active.".to_string())
+                }
+            }
+        } else {
+            Ok(false)
         }
-        false
     }
+    
+
 }
 
 pub const LOTTERY_STATE: Item<LotteryState> = Item::new("lottery_state");

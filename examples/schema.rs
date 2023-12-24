@@ -3,7 +3,7 @@ use std::fs::create_dir_all;
 
 use cosmwasm_schema::{export_schema, remove_schemas, schema_for};
 
-use lottery::msg::{ExecuteMsg, InstantiateMsg, JoinLotteryMsg, QueryMsg};
+use lottery::msg::{ExecuteMsg, InstantiateMsg, JoinLotteryMsg, QueryMsg, RoundInfoQuery};
 use lottery::state::LotteryState;
 
 fn main() {
@@ -17,5 +17,6 @@ fn main() {
     export_schema(&schema_for!(QueryMsg), &out_dir);
     export_schema(&schema_for!(LotteryState), &out_dir);
     export_schema(&schema_for!(JoinLotteryMsg), &out_dir);
-    export_schema(&schema_for!(JoinLotteryMsg), &out_dir);
+    export_schema(&schema_for!(RoundInfoQuery), &out_dir);
+    
 }

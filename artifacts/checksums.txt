@@ -1,1 +1,1 @@
-5a801f60d0fa9a9a50b6470a9fdf243838265b2a03c7fa1afd6e20262562f642  lottery-aarch64.wasm
+e8994c4b9d6cdaf17fa3b87dec497786e1dba63c7b59f5dae9362b183caf580e  lottery-aarch64.wasm

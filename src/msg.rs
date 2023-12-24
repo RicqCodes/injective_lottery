@@ -46,8 +46,3 @@ pub struct JoinLotteryMsg {
 pub struct RoundInfoQuery {
     pub round_number: u64,
 }
-
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-pub struct ParticipantInfoQuery {
-    pub participant_address: String,
-}

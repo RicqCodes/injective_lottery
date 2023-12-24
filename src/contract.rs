@@ -98,16 +98,30 @@ pub fn execute_start_new_round(
     }
 
     // Check if a new round can be started
-    if !lottery_state.is_lottery_active(&env.block.time) {
-        return Err(LotteryError::NotActive {});
+    // if !validate_lottery_active(&lottery_state, &env.block.time) {
+    //     return Err(LotteryError::NotActive {});
+    // }
+
+    match lottery_state.is_lottery_active(&env.block.time) {
+        Ok(true) => {
+             // Create a new round and update LotteryState
+            let mut lottery_state = lottery_state;
+            lottery_state.start_new_round(env.block.time);
+
+
+            // Save the updated state back to storage
+            LOTTERY_STATE.save(deps.storage, &lottery_state)?;
+        }
+        Ok(false) => {
+            LotteryError::CooldownPeriodNotPassed { };
+        }
+        Err(_error_message) => {
+            LotteryError::NotActive {};
+        }
     }
 
-    // Create a new round and update LotteryState
-    let mut lottery_state = lottery_state;
-    lottery_state.start_new_round(env.block.time);
+   
 
-    // Save the updated state back to storage
-    LOTTERY_STATE.save(deps.storage, &lottery_state)?;
 
     Ok(Response::new()
         .add_attribute("action", "start_new_round")
